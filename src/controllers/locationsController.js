@@ -35,7 +35,13 @@ export const getLocationByIdHandler = async (req, res) => {
 };
 
 export const updateLocationHandler = async (req, res) => {
-  const updates = { ...req.body };
+  const allowedUpdates = ['name', 'description', 'category']; // Please adjust with the actual updatable fields
+  const updates = {};
+  allowedUpdates.forEach(key => {
+    if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+      updates[key] = req.body[key];
+    }
+  });
   if (req.files && req.files.length > 0) {
     updates.images = extractImageUrls(req.files);
   }
