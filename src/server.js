@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
+import swaggerUi from 'swagger-ui-express';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
@@ -14,6 +15,7 @@ import usersRoutes from './routes/usersRoutes.js';
 import locationsRoutes from './routes/locationsRoutes.js';
 import categoriesRoutes from './routes/categoriesRoutes.js';
 import feedbacksRoutes from './routes/feedbacksRoutes.js';
+import swaggerSpec from './docs/swaggerConfig.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3000;
@@ -32,6 +34,15 @@ app.use(
 );
 app.use(cookieParser());
 
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'API server documentations for RelaxMap web-site',
+  }),
+);
+
 app.use(authRoutes);
 app.use(usersRoutes);
 app.use(locationsRoutes);
@@ -47,4 +58,5 @@ await connectMongoDB();
 app.listen(PORT, (error) => {
   if (error) throw error;
   console.log(`Server running on port ${PORT}`);
+  console.log(`Swagger: http://localhost:${PORT}/api-docs`);
 });
