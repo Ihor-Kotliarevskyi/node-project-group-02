@@ -11,7 +11,7 @@ export const createLocationSchema = {
       lat: Joi.number(),
       lng: Joi.number(),
     }).optional(),
-  }),
+  }).unknown(false),
 };
 
 export const updateLocationSchema = {
