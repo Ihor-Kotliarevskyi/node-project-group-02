@@ -26,7 +26,7 @@ export const updateLocationSchema = {
       lng: Joi.number(),
     }),
     isPublished: Joi.boolean(),
-  }).min(1),
+  }).min(1).unknown(false),
 };
 
 export const paginationSchema = {
