@@ -28,5 +28,7 @@ export const getFeedbacksByLocation = async (locationId, { page = 1, limit = 10 
   };
 };
 
-export const createFeedback = (data) =>
-  Feedback.create(data).then((f) => f.populate(POPULATE));
+export const createFeedback = async (data) => {
+  const feedback = await Feedback.create(data);
+  return feedback.populate(POPULATE);
+};
