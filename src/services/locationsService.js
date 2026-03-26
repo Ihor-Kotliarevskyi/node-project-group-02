@@ -44,7 +44,7 @@ export const updateLocation = async (id, authorId, updates) => {
   if (!location) return null;
 
   if (location.author.toString() !== authorId.toString()) {
-    return { forbidden: true };
+    throw new Error('Access denied. You are not the author.');
   }
 
   const allowed = ['title', 'description', 'images', 'region', 'type', 'address', 'coordinates', 'isPublished'];
