@@ -36,5 +36,5 @@ export const paginationSchema = {
     region: Joi.string().max(64),
     type: Joi.string().max(64),
     search: Joi.string().max(100),
-  }),
+  }).unknown(false),
 };
