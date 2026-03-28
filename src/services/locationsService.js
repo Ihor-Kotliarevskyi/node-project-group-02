@@ -1,21 +1,19 @@
 import { Location } from '../models/location.js';
 
 const POPULATE = [
-  { path: 'region', select: 'name' },
-  { path: 'type', select: 'name' },
-  { path: 'author', select: 'name avatar' },
+  { path: 'ownerId', select: 'name avatar' },
 ];
 
 export const createLocation = (data) => Location.create(data);
 
-export const getAllLocations = async ({ page = 1, limit = 10, region, type, search } = {}) => {
+export const getAllLocations = async ({ page = 1, limit = 10, region, locationType, search } = {}) => {
   const pageNum = Math.max(1, parseInt(page, 10) || 1);
   const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
   const skip = (pageNum - 1) * limitNum;
 
   const query = { isPublished: true };
   if (region) query.region = region;
-  if (type) query.type = type;
+  if (locationType) query.locationType = locationType;
   if (search) query.$text = { $search: search };
 
   const sort = search ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
@@ -39,15 +37,15 @@ export const getAllLocations = async ({ page = 1, limit = 10, region, type, sear
 export const getLocationById = (id) =>
   Location.findOne({ _id: id, isPublished: true }).populate(POPULATE);
 
-export const updateLocation = async (id, authorId, updates) => {
+export const updateLocation = async (id, ownerId, updates) => {
   const location = await Location.findById(id);
   if (!location) return null;
 
-  if (location.author.toString() !== authorId.toString()) {
+  if (location.ownerId.toString() !== ownerId.toString()) {
     throw new Error('Access denied. You are not the author.');
   }
 
-  const allowed = ['title', 'description', 'images', 'region', 'type', 'address', 'coordinates', 'isPublished'];
+  const allowed = ['name', 'locationType', 'region', 'description', 'image', 'images', 'address', 'coordinates', 'isPublished'];
   allowed.forEach((field) => {
     if (updates[field] !== undefined) location[field] = updates[field];
   });
