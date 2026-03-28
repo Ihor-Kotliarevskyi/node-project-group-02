@@ -13,7 +13,7 @@ const feedbackSchema = new Schema(
       type: String,
       required: [true, 'Description is required'],
       minlength: [2, 'Description must be at least 2 characters'],
-      maxlength: [200, 'Description cannot exceed 200 characters'],
+      maxlength: [1000, 'Description cannot exceed 1000 characters'],
       trim: true,
     },
     rate: {

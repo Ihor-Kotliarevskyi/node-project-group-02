@@ -10,8 +10,8 @@ export const getMe = async (req, res) => {
 };
 
 export const updateMe = async (req, res) => {
-  const { name, bio, avatar } = req.body;
-  const updated = await updateUser(req.user._id, { name, bio, avatar });
+  const { name, avatar } = req.body;
+  const updated = await updateUser(req.user._id, { name, avatar });
   res.status(200).json(updated);
 };
 

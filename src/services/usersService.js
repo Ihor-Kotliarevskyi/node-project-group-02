@@ -2,9 +2,7 @@ import { User } from '../models/user.js';
 import { Location } from '../models/location.js';
 
 const LOCATION_POPULATE = [
-  { path: 'region', select: 'name' },
-  { path: 'type', select: 'name' },
-  { path: 'author', select: 'name avatar' },
+  { path: 'ownerId', select: 'name avatar' },
 ];
 
 export const getUserById = (id) => User.findById(id);
@@ -24,7 +22,7 @@ export const getUserLocations = async (
   const limitNum = Math.min(50, Math.max(1, parseInt(limit)));
   const skip = (pageNum - 1) * limitNum;
 
-  const query = { author: userId, isPublished: true };
+  const query = { ownerId: userId, isPublished: true };
 
   const [data, total] = await Promise.all([
     Location.find(query)

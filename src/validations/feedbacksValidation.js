@@ -5,7 +5,6 @@ export const createFeedbackSchema = {
     userName: Joi.string().min(2).max(32).required(),
     rate: Joi.number().min(1).max(5).required(),
     description: Joi.string().min(2).max(1000).required().trim(),
-    location: Joi.string().required(), // ID локації, якій залишають відгук
   }).unknown(false),
 };
 
