@@ -21,12 +21,12 @@ const swaggerSpec = swaggerJSDoc({
     security: [{ cookieAuth: [] }],
   },
   apis: [
-    './schemasDoc.js',
-    './authDoc.js',
-    './usersDoc.js',
-    './locationsDoc.js',
-    './categoriesDoc.js',
-    './feedbacksDoc.js',
+    './paths/schemasDoc.js',
+    './paths/authDoc.js',
+    './paths/usersDoc.js',
+    './paths/locationsDoc.js',
+    './paths/categoriesDoc.js',
+    './paths/feedbacksDoc.js',
   ],
 });
 
