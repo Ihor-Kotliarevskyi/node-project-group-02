@@ -1,4 +1,9 @@
 import swaggerJSDoc from 'swagger-jsdoc';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const swaggerSpec = swaggerJSDoc({
   definition: {
@@ -8,7 +13,10 @@ const swaggerSpec = swaggerJSDoc({
       version: '1.0.0',
       description: 'API server documentations for RelaxMap web-site',
     },
-    servers: [{ url: process.env.APP_DOMAIN || "http://localhost:5000", description: 'Main server' }],
+    servers: [{ 
+      url: process.env.APP_DOMAIN || "http://localhost:5000", 
+      description: 'Main server' 
+    }],
     components: {
       securitySchemes: {
         cookieAuth: {
@@ -21,12 +29,12 @@ const swaggerSpec = swaggerJSDoc({
     security: [{ cookieAuth: [] }],
   },
   apis: [
-    './paths/schemasDoc.js',
-    './paths/authDoc.js',
-    './paths/usersDoc.js',
-    './paths/locationsDoc.js',
-    './paths/categoriesDoc.js',
-    './paths/feedbacksDoc.js',
+    join(__dirname, 'paths', 'schemasDoc.js'),
+    join(__dirname, 'paths', 'authDoc.js'),
+    join(__dirname, 'paths', 'usersDoc.js'),
+    join(__dirname, 'paths', 'locationsDoc.js'),
+    join(__dirname, 'paths', 'categoriesDoc.js'),
+    join(__dirname, 'paths', 'feedbacksDoc.js'),
   ],
 });
 
