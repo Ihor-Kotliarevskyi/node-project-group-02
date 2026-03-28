@@ -6,7 +6,6 @@ export const updateProfileSchema = {
       'string.min': 'Name must be at least 2 characters',
       'string.max': 'Name cannot exceed 32 characters',
     }),
-
     avatar: Joi.string().uri().trim().allow('').messages({
       'string.uri': 'Avatar must be a valid URL',
     }),

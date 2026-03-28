@@ -29,17 +29,13 @@
  *                 type: string
  *                 format: email
  *                 maxLength: 64
- *                 example: "[EMAIL_ADDRESS]"
+ *                 example: "user@example.com"
  *               password:
  *                 type: string
  *                 format: password
  *                 minLength: 8
  *                 maxLength: 128
  *                 example: "securePassword123"
- *               avatar:
- *                 type: string
- *                 format: uri
- *                 example: "https://example.com/avatar.jpg"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -90,7 +86,7 @@
  *     summary: Вихід з системи (видалення сесії та cookies)
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       204:
  *         description: Successfully logged out
@@ -117,7 +113,7 @@
 //     content:
 //       application/json:
 //         schema:
-//           $ref: '#/components/schemas/User'  // ← вже є, працюватиме
+//           $ref: '#/components/schemas/User'
 
 //   200 (для login):
 //     description: Login successful

@@ -53,7 +53,7 @@
  *     summary: Створити нову локацію (тільки авторизовані)
  *     tags: [Locations]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -80,11 +80,6 @@
  *                 type: string
  *                 format: uri
  *                 description: Main image URL
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: uri
  *               address:
  *                 type: string
  *               coordinates:
@@ -135,7 +130,7 @@
  *     summary: Редагування локації (тільки автор)
  *     tags: [Locations]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -164,11 +159,6 @@
  *               image:
  *                 type: string
  *                 format: uri
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: uri
  *               isPublished:
  *                 type: boolean
  *               coordinates:
@@ -199,7 +189,6 @@
  *         region: { type: string }
  *         description: { type: string }
  *         image: { type: string, format: uri }
- *         images: { type: array, items: { type: string, format: uri } }
  *         address: { type: string }
  *         coordinates:
  *           type: object

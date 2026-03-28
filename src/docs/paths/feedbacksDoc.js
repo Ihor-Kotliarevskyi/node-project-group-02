@@ -12,7 +12,7 @@
  *     summary: Залишити відгук до локації
  *     tags: [Feedbacks]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: locationId
@@ -34,7 +34,7 @@
  *                 example: 4.5
  *               description:
  *                 type: string
- *                 example: "Great atmosphere, very cozy!"
+ *                 example: "Чудова атмосфера, дуже затишно!"
  *     responses:
  *       201:
  *         description: Feedback added successfully

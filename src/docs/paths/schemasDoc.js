@@ -26,16 +26,6 @@
  *           format: uri
  *           nullable: true
  *           example: "https://example.com/avatar.jpg"
- *         bio:
- *           type: string
- *           maxLength: 500
- *           nullable: true
- *           example: "Мандрівник та фотограф"
- *         role:
- *           type: string
- *           enum: [user, admin]
- *           default: user
- *           example: "user"
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -64,10 +54,6 @@
  *           format: uri
  *           nullable: true
  *           example: "https://example.com/avatar.jpg"
- *         bio:
- *           type: string
- *           nullable: true
- *           example: "Мандрівник та фотограф"
  *     
  *     # ========== AUTH SCHEMAS ==========
  *     
@@ -146,12 +132,6 @@
  *           type: string
  *           format: uri
  *           example: "https://example.com/synevyr.jpg"
- *         images:
- *           type: array
- *           items:
- *             type: string
- *             format: uri
- *           example: ["https://example.com/synevyr1.jpg", "https://example.com/synevyr2.jpg"]
  *         address:
  *           type: string
  *           nullable: true
