@@ -20,7 +20,14 @@ const swaggerSpec = swaggerJSDoc({
     },
     security: [{ cookieAuth: [] }],
   },
-  apis: ['./src/docs/paths/*.js'],
+  apis: [
+    './schemasDoc.js',
+    './authDoc.js',
+    './usersDoc.js',
+    './locationsDoc.js',
+    './categoriesDoc.js',
+    './feedbacksDoc.js',
+  ],
 });
 
 export default swaggerSpec;

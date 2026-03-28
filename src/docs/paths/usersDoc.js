@@ -118,3 +118,42 @@
  *       200:
  *         description: Paginated list of user's locations
  */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: "68d5213e0e6bcc357e9833b0"
+ *         name:
+ *           type: string
+ *           example: "Петро Мельник"
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: "user@example.com"
+ *         avatar:
+ *           type: string
+ *           format: uri
+ *           nullable: true
+ *         bio:
+ *           type: string
+ *           nullable: true
+ *         role:
+ *           type: string
+ *           enum: [user, admin]
+ *           default: user
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *       required:
+ *         - id
+ *         - name
+ *         - email
+ */

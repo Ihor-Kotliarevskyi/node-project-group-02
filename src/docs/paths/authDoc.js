@@ -29,7 +29,7 @@
  *                 type: string
  *                 format: email
  *                 maxLength: 64
- *                 example: "user@example.com"
+ *                 example: "[EMAIL_ADDRESS]"
  *               password:
  *                 type: string
  *                 format: password
@@ -111,3 +111,31 @@
  *       401:
  *         description: Invalid or missing refresh token
  */
+// responses:
+//   201:
+//     description: User registered successfully
+//     content:
+//       application/json:
+//         schema:
+//           $ref: '#/components/schemas/User'  // ← вже є, працюватиме
+
+//   200 (для login):
+//     description: Login successful
+//     content:
+//       application/json:
+//         schema:
+//           $ref: '#/components/schemas/LoginResponse'
+
+//   400:
+//     description: Validation error
+//     content:
+//       application/json:
+//         schema:
+//           $ref: '#/components/schemas/ValidationError'
+
+//   409:
+//     description: Conflict
+//     content:
+//       application/json:
+//         schema:
+//           $ref: '#/components/schemas/ConflictError'
