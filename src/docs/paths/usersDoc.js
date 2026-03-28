@@ -44,9 +44,6 @@
  *                 type: string
  *                 minLength: 2
  *                 maxLength: 32
- *               bio:
- *                 type: string
- *                 maxLength: 500
  *               avatar:
  *                 type: string
  *                 format: uri
@@ -139,13 +136,6 @@
  *           type: string
  *           format: uri
  *           nullable: true
- *         bio:
- *           type: string
- *           nullable: true
- *         role:
- *           type: string
- *           enum: [user, admin]
- *           default: user
  *         createdAt:
  *           type: string
  *           format: date-time
