@@ -26,7 +26,7 @@ export const getLocationByIdHandler = async (req, res) => {
 };
 
 export const updateLocationHandler = async (req, res) => {
-  const allowedUpdates = ['name', 'locationType', 'region', 'description', 'image', 'images', 'address', 'coordinates', 'isPublished'];
+  const allowedUpdates = ['name', 'locationType', 'region', 'description', 'image', 'address', 'coordinates', 'isPublished'];
   const updates = {};
   allowedUpdates.forEach(key => {
     if (Object.prototype.hasOwnProperty.call(req.body, key)) {
