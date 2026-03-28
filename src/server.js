@@ -18,17 +18,16 @@ import feedbacksRoutes from './routes/feedbacksRoutes.js';
 import swaggerSpec from './docs/swaggerConfig.js';
 
 const app = express();
-const PORT = parseInt(process.env.PORT, 10) || 3000;
-const isProduction = process.env.NODE_ENV === 'production';
+const port = parseInt(process.env.PORT, 10) || 5000;
+const domain = process.env.APP_DOMAIN || `http://localhost:${port}`; 
+const frontendDomain = process.env.FRONTEND_DOMAIN || 'http://localhost:3000';
 
 app.use(logger);
 app.use(express.json());
 app.use(
   cors({
-    origin:
-      isProduction && process.env.FRONTEND_DOMAIN
-        ? process.env.FRONTEND_DOMAIN
-        : true,
+    origin: frontendDomain,
+    methods: 'GET,POST,PUT,PATCH,DELETE',
     credentials: true,
   }),
 );
@@ -55,8 +54,8 @@ app.use(errorHandler);
 
 await connectMongoDB();
 
-app.listen(PORT, (error) => {
+app.listen(port, (error) => {
   if (error) throw error;
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Swagger: http://localhost:${PORT}/api-docs`);
+  console.log(`Server is running on port: ${port}`);
+  console.log(`Swagger documentation: ${domain}/api-docs`);
 });

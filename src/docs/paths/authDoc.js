@@ -24,7 +24,7 @@
  *                 type: string
  *                 minLength: 2
  *                 maxLength: 32
- *                 example: "Ivan Bolvan"
+ *                 example: "Петро Мельник"
  *               email:
  *                 type: string
  *                 format: email
