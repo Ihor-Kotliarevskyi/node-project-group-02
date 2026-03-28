@@ -12,7 +12,7 @@
  *     summary: Отримати дані поточного користувача
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Current user data retrieved successfully
