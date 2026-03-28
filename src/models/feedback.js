@@ -12,8 +12,9 @@ const feedbackSchema = new Schema(
     description: {
       type: String,
       required: [true, 'Description is required'],
-      minlength: [1, 'Description must be at least 1 character'],
+      minlength: [2, 'Description must be at least 2 characters'],
       maxlength: [200, 'Description cannot exceed 200 characters'],
+      trim: true,
     },
     rate: {
       type: Number,
@@ -32,9 +33,13 @@ const feedbackSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
 );
 
 feedbackSchema.index({ location: 1 });
+feedbackSchema.index({ location: 1, author: 1 }, { unique: true });
 
 export const Feedback = model('Feedback', feedbackSchema);
