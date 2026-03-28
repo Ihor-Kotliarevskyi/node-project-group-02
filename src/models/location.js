@@ -15,47 +15,66 @@ const locationSchema = new Schema(
       minlength: [20, 'Description must be at least 20 characters'],
       maxlength: [6000, 'Description cannot exceed 6000 characters'],
     },
+    image: {
+      type: String,
+      required: [true, 'Main image is required'],
+    },
     images: {
       type: [String],
       default: [],
     },
     region: {
       type: String,
-      required: [true, 'Region is required'],
-      maxlength: [64, 'Region cannot exceed 64 characters'],
+      required: [true, 'Region slug is required'],
       trim: true,
     },
-    type: {
+    locationType: {
       type: String,
       required: [true, 'Location type is required'],
-      maxlength: [64, 'Type cannot exceed 64 characters'],
       trim: true,
     },
-    author: {
+    ownerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
+    coordinates: {
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
+    },
+    rate: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    feedbacksId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Feedback',
+      },
+    ],
     address: {
       type: String,
       trim: true,
       default: '',
-    },
-    coordinates: {
-      lat: { type: Number },
-      lng: { type: Number },
     },
     isPublished: {
       type: Boolean,
       default: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 );
 
 locationSchema.index({ name: 'text', description: 'text' });
 locationSchema.index({ region: 1 });
-locationSchema.index({ type: 1 });
-locationSchema.index({ author: 1 });
+locationSchema.index({ locationType: 1 });
+locationSchema.index({ ownerId: 1 });
 
 export const Location = model('Location', locationSchema);

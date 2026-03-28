@@ -7,27 +7,32 @@ const userSchema = new Schema(
       required: [true, 'Name is required'],
       trim: true,
       minlength: [2, 'Name must be at least 2 characters'],
-      maxlength: [50, 'Name cannot exceed 50 characters'],
+      maxlength: [32, 'Name cannot exceed 32 characters'],
     },
     email: {
       type: String,
       required: [true, 'Email is required'],
-      unique: true,
       lowercase: true,
+      unique: true,
       trim: true,
+      maxlength: [64, 'Email cannot exceed 64 characters'],
+      match: [/^\S+@\S+\.\S+$/],
     },
     password: {
       type: String,
       required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters'],
+      maxlength: [128, 'Password cannot exceed 128 characters'],
     },
     avatar: {
       type: String,
       default: '',
+      trim: true,
     },
-    bio: {
-      type: String,
-      default: '',
-      maxlength: [500, 'Bio cannot exceed 500 characters'],
+    articlesAmount: {
+      type: Number,
+      min: 0,
+      default: 0,
     },
   },
   {
@@ -35,6 +40,7 @@ const userSchema = new Schema(
     toJSON: {
       transform(doc, ret) {
         delete ret.password;
+        delete ret.__v;
         return ret;
       },
     },
