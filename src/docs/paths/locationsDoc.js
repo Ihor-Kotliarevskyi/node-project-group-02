@@ -186,3 +186,50 @@
  *       404:
  *         description: Location not found
  */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Location:
+ *       type: object
+ *       properties:
+ *         id: { type: string }
+ *         name: { type: string }
+ *         locationType: { type: string }
+ *         region: { type: string }
+ *         description: { type: string }
+ *         image: { type: string, format: uri }
+ *         images: { type: array, items: { type: string, format: uri } }
+ *         address: { type: string }
+ *         coordinates:
+ *           type: object
+ *           properties:
+ *             lat: { type: number }
+ *             lon: { type: number }
+ *         author: { type: string }
+ *         isPublished: { type: boolean }
+ *         createdAt: { type: string, format: date-time }
+ *         updatedAt: { type: string, format: date-time }
+ *     
+ *     LoginResponse:
+ *       type: object
+ *       properties:
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *         message:
+ *           type: string
+ *           example: "Login successful"
+ *     
+ *     Error:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         errors:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               field: { type: string }
+ *               message: { type: string }
+ */
