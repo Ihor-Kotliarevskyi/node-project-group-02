@@ -45,7 +45,7 @@ export const updateLocation = async (id, ownerId, updates) => {
     throw new Error('Access denied. You are not the author.');
   }
 
-  const allowed = ['name', 'locationType', 'region', 'description', 'image', 'images', 'address', 'coordinates', 'isPublished'];
+  const allowed = ['name', 'locationType', 'region', 'description', 'image', 'address', 'coordinates', 'isPublished'];
   allowed.forEach((field) => {
     if (updates[field] !== undefined) location[field] = updates[field];
   });

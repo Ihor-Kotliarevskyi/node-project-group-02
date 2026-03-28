@@ -19,10 +19,6 @@ const locationSchema = new Schema(
       type: String,
       required: [true, 'Main image is required'],
     },
-    images: {
-      type: [String],
-      default: [],
-    },
     region: {
       type: String,
       required: [true, 'Region slug is required'],
