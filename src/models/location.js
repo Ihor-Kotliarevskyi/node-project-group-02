@@ -50,11 +50,6 @@ const locationSchema = new Schema(
         ref: 'Feedback',
       },
     ],
-    address: {
-      type: String,
-      trim: true,
-      default: '',
-    },
     isPublished: {
       type: Boolean,
       default: true,

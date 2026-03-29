@@ -132,15 +132,11 @@
  *           type: string
  *           format: uri
  *           example: "https://example.com/synevyr.jpg"
- *         address:
- *           type: string
- *           nullable: true
- *           example: "Закарпатська обл., Міжгірський р-н"
  *         coordinates:
  *           $ref: '#/components/schemas/Coordinates'
- *         author:
+ *         ownerId:
  *           type: string
- *           description: ID автора
+ *           description: ID власника локації
  *           example: "68d5213e0e6bcc357e9833b0"
  *         isPublished:
  *           type: boolean
