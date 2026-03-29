@@ -80,8 +80,6 @@
  *                 type: string
  *                 format: uri
  *                 description: Main image URL
- *               address:
- *                 type: string
  *               coordinates:
  *                 type: object
  *                 required: [lat, lon]
@@ -189,13 +187,12 @@
  *         region: { type: string }
  *         description: { type: string }
  *         image: { type: string, format: uri }
- *         address: { type: string }
  *         coordinates:
  *           type: object
  *           properties:
  *             lat: { type: number }
  *             lon: { type: number }
- *         author: { type: string }
+ *         ownerId: { type: string }
  *         isPublished: { type: boolean }
  *         createdAt: { type: string, format: date-time }
  *         updatedAt: { type: string, format: date-time }

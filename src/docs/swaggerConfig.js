@@ -15,7 +15,7 @@ const swaggerSpec = swaggerJSDoc({
     },
     servers: [{ 
       url: process.env.APP_DOMAIN || "http://localhost:5000", 
-      description: 'Main server' 
+      description: '' 
     }],
     components: {
       securitySchemes: {

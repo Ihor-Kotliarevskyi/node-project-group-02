@@ -192,14 +192,12 @@ src/
   name:        String   // 3–96 символів
   description: String   // 20–6000 символів
   image:       String   // головне фото (URL)
-  images:      [String] // галерея
   region:      String   // slug регіону
   locationType: String  // тип локації
   ownerId:     ObjectId → User
   coordinates: { lat: Number, lon: Number }
   rate:        Number   // 0–5 (середній рейтинг)
   feedbacksId: [ObjectId → Feedback]
-  address:     String
   isPublished: Boolean
   createdAt / updatedAt
 }
@@ -208,10 +206,9 @@ src/
 ### Feedback
 ```js
 {
-  userId:     ObjectId → User
-  locationId: ObjectId → Location
-  comment:    String
-  rating:     Number   // 1–5
+  userName:     String
+  description:    String
+  rate:     Number   // 1–5
   createdAt / updatedAt
 }
 ```

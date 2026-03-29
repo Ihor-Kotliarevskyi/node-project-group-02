@@ -7,7 +7,6 @@ export const createLocationSchema = {
     region: Joi.string().max(64).trim().required(),
     description: Joi.string().min(20).max(6000).trim().required(),
     image: Joi.string().uri().required(),
-    address: Joi.string().allow('').trim().optional(),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90).required(),
       lon: Joi.number().min(-180).max(180).required(),
@@ -22,7 +21,6 @@ export const updateLocationSchema = {
     region: Joi.string().max(64).trim(),
     description: Joi.string().min(20).max(6000).trim(),
     image: Joi.string().uri(),
-    address: Joi.string().allow('').trim(),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90),
       lon: Joi.number().min(-180).max(180),
