@@ -37,8 +37,8 @@ export const paginationSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).max(50).default(10),
-    region: Joi.string().max(64).trim(),
-    locationType: Joi.string().max(64).trim(),
-    search: Joi.string().max(100).trim(),
+    region: Joi.string().max(64).trim().allow(''),
+    locationType: Joi.string().max(64).trim().allow(''),
+    search: Joi.string().max(100).trim().allow(''),
   }).unknown(false),
 };

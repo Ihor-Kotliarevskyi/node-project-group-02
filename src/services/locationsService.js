@@ -11,12 +11,17 @@ export const getAllLocations = async ({ page = 1, limit = 10, region, locationTy
   const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
   const skip = (pageNum - 1) * limitNum;
 
-  const query = { isPublished: true };
+  const query = { isPublished: { $ne: false } };
   if (region) query.region = region;
   if (locationType) query.locationType = locationType;
-  if (search) query.$text = { $search: search };
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { description: { $regex: search, $options: 'i' } },
+    ];
+  }
 
-  const sort = search ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
+  const sort = { createdAt: -1 };
 
   const [data, total] = await Promise.all([
     Location.find(query).skip(skip).limit(limitNum).sort(sort).populate(POPULATE),
@@ -35,7 +40,7 @@ export const getAllLocations = async ({ page = 1, limit = 10, region, locationTy
 };
 
 export const getLocationById = (id) =>
-  Location.findOne({ _id: id, isPublished: true }).populate(POPULATE);
+  Location.findOne({ _id: id, isPublished: { $ne: false } }).populate(POPULATE);
 
 export const updateLocation = async (id, ownerId, updates) => {
   const location = await Location.findById(id);

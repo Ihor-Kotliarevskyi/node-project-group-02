@@ -22,7 +22,7 @@ export const getUserLocations = async (
   const limitNum = Math.min(50, Math.max(1, parseInt(limit)));
   const skip = (pageNum - 1) * limitNum;
 
-  const query = { ownerId: userId, isPublished: true };
+  const query = { ownerId: userId, isPublished: { $ne: false } };
 
   const [data, total] = await Promise.all([
     Location.find(query)
