@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Users
- *   description: User and profile management
+ *   description: Управління користувачами
  */
 
 /**
@@ -31,7 +31,7 @@
  *     summary: Оновити профіль поточного користувача
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -44,7 +44,7 @@
  *                 type: string
  *                 minLength: 2
  *                 maxLength: 32
- *               avatar:
+ *               avatarUrl:
  *                 type: string
  *                 format: uri
  *     responses:
@@ -73,7 +73,8 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: MongoDB User ID
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId (24-символьний hex)
  *     responses:
  *       200:
  *         description: Public user data retrieved successfully
@@ -81,6 +82,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid id format
  *       404:
  *         description: User not found
  */
@@ -98,6 +101,8 @@
  *         required: true
  *         schema:
  *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId (24-символьний hex)
  *       - in: query
  *         name: page
  *         schema:
@@ -114,36 +119,12 @@
  *     responses:
  *       200:
  *         description: Paginated list of user's locations
- */
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           example: "68d5213e0e6bcc357e9833b0"
- *         name:
- *           type: string
- *           example: "Петро Мельник"
- *         email:
- *           type: string
- *           format: email
- *           example: "user@example.com"
- *         avatar:
- *           type: string
- *           format: uri
- *           nullable: true
- *         createdAt:
- *           type: string
- *           format: date-time
- *         updatedAt:
- *           type: string
- *           format: date-time
- *       required:
- *         - id
- *         - name
- *         - email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LocationListResponse'
+ *       400:
+ *         description: Invalid id format
+ *       404:
+ *         description: User not found
  */

@@ -1,12 +1,17 @@
+import createHttpError from 'http-errors';
 import { Location } from '../models/location.js';
 
-const POPULATE = [
-  { path: 'ownerId', select: 'name avatar' },
-];
+const POPULATE = [{ path: 'ownerId', select: 'name avatarUrl' }];
 
 export const createLocation = (data) => Location.create(data);
 
-export const getAllLocations = async ({ page = 1, limit = 10, region, locationType, search } = {}) => {
+export const getAllLocations = async ({
+  page = 1,
+  limit = 10,
+  region,
+  locationType,
+  search,
+} = {}) => {
   const pageNum = Math.max(1, parseInt(page, 10) || 1);
   const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
   const skip = (pageNum - 1) * limitNum;
@@ -24,7 +29,11 @@ export const getAllLocations = async ({ page = 1, limit = 10, region, locationTy
   const sort = { createdAt: -1 };
 
   const [data, total] = await Promise.all([
-    Location.find(query).skip(skip).limit(limitNum).sort(sort).populate(POPULATE),
+    Location.find(query)
+      .skip(skip)
+      .limit(limitNum)
+      .sort(sort)
+      .populate(POPULATE),
     Location.countDocuments(query),
   ]);
 
@@ -47,10 +56,18 @@ export const updateLocation = async (id, ownerId, updates) => {
   if (!location) return null;
 
   if (location.ownerId.toString() !== ownerId.toString()) {
-    throw new Error('Access denied. You are not the author.');
+    throw createHttpError(403, 'Access denied. You are not the author.');
   }
 
-  const allowed = ['name', 'locationType', 'region', 'description', 'image', 'coordinates', 'isPublished'];
+  const allowed = [
+    'name',
+    'locationType',
+    'region',
+    'description',
+    'image',
+    'coordinates',
+    'isPublished',
+  ];
   allowed.forEach((field) => {
     if (updates[field] !== undefined) location[field] = updates[field];
   });
@@ -58,4 +75,15 @@ export const updateLocation = async (id, ownerId, updates) => {
   await location.save();
   await location.populate(POPULATE);
   return location;
+};
+
+export const deleteLocation = async (locationId, userId) => {
+  const location = await Location.findById(locationId);
+  if (!location) return null;
+
+  if (location.ownerId.toString() !== userId.toString()) {
+    throw createHttpError(403, 'Access denied. You are not the author.');
+  }
+
+  return Location.findByIdAndDelete(locationId);
 };

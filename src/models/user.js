@@ -24,7 +24,7 @@ const userSchema = new Schema(
       minlength: [8, 'Password must be at least 8 characters'],
       maxlength: [128, 'Password cannot exceed 128 characters'],
     },
-    avatar: {
+    avatarUrl: {
       type: String,
       default: 'https://ac.goit.global/fullstack/react/default-avatar.jpg',
       trim: true,

@@ -1,10 +1,11 @@
-import createHttpError from "http-errors";
+import createHttpError from 'http-errors';
 import {
   createLocation,
+  deleteLocation,
   getAllLocations,
   getLocationById,
   updateLocation,
-} from "../services/locationsService.js";
+} from '../services/locationsService.js';
 
 export const createLocationHandler = async (req, res) => {
   const location = await createLocation({
@@ -21,14 +22,22 @@ export const getAllLocationsHandler = async (req, res) => {
 
 export const getLocationByIdHandler = async (req, res) => {
   const location = await getLocationById(req.params.id);
-  if (!location) throw createHttpError(404, "Location not found");
+  if (!location) throw createHttpError(404, 'Location not found');
   res.status(200).json(location);
 };
 
 export const updateLocationHandler = async (req, res) => {
-  const allowedUpdates = ['name', 'locationType', 'region', 'description', 'image', 'coordinates', 'isPublished'];
+  const allowedUpdates = [
+    'name',
+    'locationType',
+    'region',
+    'description',
+    'image',
+    'coordinates',
+    'isPublished',
+  ];
   const updates = {};
-  allowedUpdates.forEach(key => {
+  allowedUpdates.forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(req.body, key)) {
       updates[key] = req.body[key];
     }
@@ -36,9 +45,15 @@ export const updateLocationHandler = async (req, res) => {
 
   const result = await updateLocation(req.params.id, req.user._id, updates);
 
-  if (!result) throw createHttpError(404, "Location not found");
-  if (result.forbidden)
-    throw createHttpError(403, "Access denied. You are not the author.");
+  if (!result) throw createHttpError(404, 'Location not found');
 
   res.status(200).json(result);
+};
+
+export const deleteLocationHandler = async (req, res) => {
+  const location = await deleteLocation(req.params.id, req.user._id);
+
+  if (!location) throw createHttpError(404, 'Location not found');
+
+  res.status(204).send();
 };

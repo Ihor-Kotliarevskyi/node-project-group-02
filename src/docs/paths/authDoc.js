@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Auth
- *   description: User authentication and session management
+ *   description: Аутентифікація користувача та керування сеансами
  */
 
 /**
@@ -75,6 +75,12 @@
  *     responses:
  *       200:
  *         description: Login successful, session tokens set in cookies
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Unauthorized (invalid email or password)
  */
@@ -104,34 +110,10 @@
  *     responses:
  *       200:
  *         description: Session refreshed, new tokens set in cookies
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RefreshResponse'
  *       401:
  *         description: Invalid or missing refresh token
  */
-// responses:
-//   201:
-//     description: User registered successfully
-//     content:
-//       application/json:
-//         schema:
-//           $ref: '#/components/schemas/User'
-
-//   200 (для login):
-//     description: Login successful
-//     content:
-//       application/json:
-//         schema:
-//           $ref: '#/components/schemas/LoginResponse'
-
-//   400:
-//     description: Validation error
-//     content:
-//       application/json:
-//         schema:
-//           $ref: '#/components/schemas/ValidationError'
-
-//   409:
-//     description: Conflict
-//     content:
-//       application/json:
-//         schema:
-//           $ref: '#/components/schemas/ConflictError'

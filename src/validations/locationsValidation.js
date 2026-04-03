@@ -31,6 +31,12 @@ export const updateLocationSchema = {
     .unknown(false),
 };
 
+export const idParamSchema = {
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().hex().length(24).required(),
+  }),
+};
+
 export const paginationSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),

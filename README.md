@@ -180,7 +180,7 @@ src/
   name:           String   // 2–32 символи
   email:          String   // унікальний, нижній регістр
   password:       String   // bcrypt-хеш, 8–128 символів (не повертається в JSON)
-  avatar:         String   // URL до Cloudinary
+  avatarUrl:      String   // URL до Cloudinary
   articlesAmount: Number   // кількість опублікованих локацій
   createdAt / updatedAt
 }
