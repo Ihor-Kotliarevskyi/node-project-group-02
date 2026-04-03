@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Locations
- *   description: Recreation and travel spots
+ *   description: Локації для відпочинку та подорожей
  */
 
 /**
@@ -44,6 +44,12 @@
  *     responses:
  *       200:
  *         description: Successfully retrieved paginated list of locations
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LocationListResponse'
+ *       400:
+ *         description: Validation error (invalid query params)
  */
 
 /**
@@ -95,6 +101,10 @@
  *     responses:
  *       201:
  *         description: Location created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
  *       400:
  *         description: Validation error or invalid data
  *       401:
@@ -114,9 +124,17 @@
  *         required: true
  *         schema:
  *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId (24-символьний hex)
  *     responses:
  *       200:
  *         description: Detailed location data retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       400:
+ *         description: Invalid id format
  *       404:
  *         description: Location not found
  */
@@ -135,6 +153,8 @@
  *         required: true
  *         schema:
  *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId (24-символьний hex)
  *     requestBody:
  *       content:
  *         application/json:
@@ -169,53 +189,45 @@
  *     responses:
  *       200:
  *         description: Location updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       400:
+ *         description: Validation error or invalid id format
+ *       401:
+ *         description: Unauthorized
  *       403:
  *         description: Forbidden (not the author)
  *       404:
  *         description: Location not found
  */
+
 /**
  * @swagger
- * components:
- *   schemas:
- *     Location:
- *       type: object
- *       properties:
- *         id: { type: string }
- *         name: { type: string }
- *         locationType: { type: string }
- *         region: { type: string }
- *         description: { type: string }
- *         image: { type: string, format: uri }
- *         coordinates:
- *           type: object
- *           properties:
- *             lat: { type: number }
- *             lon: { type: number }
- *         ownerId: { type: string }
- *         isPublished: { type: boolean }
- *         createdAt: { type: string, format: date-time }
- *         updatedAt: { type: string, format: date-time }
- *     
- *     LoginResponse:
- *       type: object
- *       properties:
- *         user:
- *           $ref: '#/components/schemas/User'
- *         message:
+ * /locations/{id}:
+ *   delete:
+ *     summary: Видалення локації (тільки автор)
+ *     tags: [Locations]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
  *           type: string
- *           example: "Login successful"
- *     
- *     Error:
- *       type: object
- *       properties:
- *         message:
- *           type: string
- *         errors:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               field: { type: string }
- *               message: { type: string }
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId (24-символьний hex)
+ *     responses:
+ *       204:
+ *         description: Location deleted successfully
+ *       400:
+ *         description: Invalid id format
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (not the author)
+ *       404:
+ *         description: Location not found
  */

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
   createLocationHandler,
+  deleteLocationHandler,
   getAllLocationsHandler,
   getLocationByIdHandler,
   updateLocationHandler,
@@ -10,8 +11,9 @@ import { authenticate } from '../middleware/authenticate.js';
 
 import {
   createLocationSchema,
-  updateLocationSchema,
+  idParamSchema,
   paginationSchema,
+  updateLocationSchema,
 } from '../validations/locationsValidation.js';
 
 const router = Router();
@@ -25,13 +27,20 @@ router.post(
   createLocationHandler,
 );
 
-router.get('/locations/:id', getLocationByIdHandler);
+router.get('/locations/:id', celebrate(idParamSchema), getLocationByIdHandler);
 
 router.patch(
   '/locations/:id',
   authenticate,
-  celebrate(updateLocationSchema),
+  celebrate({ ...idParamSchema, ...updateLocationSchema }),
   updateLocationHandler,
+);
+
+router.delete(
+  '/locations/:id',
+  authenticate,
+  celebrate(idParamSchema),
+  deleteLocationHandler,
 );
 
 export default router;

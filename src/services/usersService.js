@@ -1,9 +1,7 @@
 import { User } from '../models/user.js';
 import { Location } from '../models/location.js';
 
-const LOCATION_POPULATE = [
-  { path: 'ownerId', select: 'name avatar' },
-];
+const LOCATION_POPULATE = [{ path: 'ownerId', select: 'name avatarUrl' }];
 
 export const getUserById = (id) => User.findById(id);
 

@@ -2,9 +2,9 @@
  * @swagger
  * components:
  *   schemas:
- *     
+ *
  *     # ========== USER SCHEMAS ==========
- *     
+ *
  *     User:
  *       type: object
  *       properties:
@@ -21,7 +21,7 @@
  *           format: email
  *           maxLength: 64
  *           example: "user@example.com"
- *         avatar:
+ *         avatarUrl:
  *           type: string
  *           format: uri
  *           nullable: true
@@ -34,11 +34,15 @@
  *           type: string
  *           format: date-time
  *           example: "2024-03-20T14:22:00Z"
+ *         articlesAmount:
+ *           type: integer
+ *           minimum: 0
+ *           example: 5
  *       required:
  *         - id
  *         - name
  *         - email
- *     
+ *
  *     UserPublic:
  *       type: object
  *       description: Публічна інформація про користувача (без email)
@@ -49,14 +53,14 @@
  *         name:
  *           type: string
  *           example: "Петро Мельник"
- *         avatar:
+ *         avatarUrl:
  *           type: string
  *           format: uri
  *           nullable: true
  *           example: "https://example.com/avatar.jpg"
- *     
+ *
  *     # ========== AUTH SCHEMAS ==========
- *     
+ *
  *     Tokens:
  *       type: object
  *       description: Токени сесії (передаються в cookies, але можуть бути в тілі для інформації)
@@ -67,7 +71,7 @@
  *         refreshToken:
  *           type: string
  *           example: "eyJhbGciOiJIUzI1NiIs..."
- *     
+ *
  *     LoginResponse:
  *       type: object
  *       properties:
@@ -76,16 +80,16 @@
  *           example: "Login successful"
  *         user:
  *           $ref: '#/components/schemas/User'
- *     
+ *
  *     RefreshResponse:
  *       type: object
  *       properties:
  *         message:
  *           type: string
  *           example: "Session refreshed"
- *     
+ *
  *     # ========== LOCATION SCHEMAS ==========
- *     
+ *
  *     Coordinates:
  *       type: object
  *       description: Географічні координати
@@ -103,7 +107,7 @@
  *       required:
  *         - lat
  *         - lon
- *     
+ *
  *     Location:
  *       type: object
  *       properties:
@@ -135,13 +139,21 @@
  *         coordinates:
  *           $ref: '#/components/schemas/Coordinates'
  *         ownerId:
- *           type: string
- *           description: ID власника локації
- *           example: "68d5213e0e6bcc357e9833b0"
+ *           $ref: '#/components/schemas/UserPublic'
  *         isPublished:
  *           type: boolean
- *           default: false
+ *           default: true
  *           example: true
+ *         rate:
+ *           type: number
+ *           minimum: 0
+ *           maximum: 5
+ *           example: 4.5
+ *         feedbacksId:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: ["68d5213e0e6bcc357e9833b2"]
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -155,7 +167,7 @@
  *         - region
  *         - description
  *         - coordinates
- *     
+ *
  *     LocationListResponse:
  *       type: object
  *       description: Пагінований список локацій
@@ -179,30 +191,20 @@
  *             totalPages:
  *               type: integer
  *               example: 5
- *             hasNext:
- *               type: boolean
- *               example: true
- *             hasPrev:
- *               type: boolean
- *               example: false
- *     
+ *
  *     # ========== FEEDBACK SCHEMAS ==========
- *     
+ *
  *     Feedback:
  *       type: object
  *       properties:
  *         id:
  *           type: string
  *           example: "68d5213e0e6bcc357e9833b2"
- *         userId:
- *           type: string
- *           example: "68d5213e0e6bcc357e9833b0"
  *         userName:
  *           type: string
+ *           minLength: 2
+ *           maxLength: 32
  *           example: "Петро Мельник"
- *         locationId:
- *           type: string
- *           example: "68d5213e0e6bcc357e9833b1"
  *         rate:
  *           type: number
  *           minimum: 1
@@ -210,12 +212,20 @@
  *           example: 4.5
  *         description:
  *           type: string
+ *           minLength: 2
+ *           maxLength: 1000
  *           example: "Чудове місце для відпочинку! Рекомендую."
+ *         author:
+ *           $ref: '#/components/schemas/UserPublic'
+ *         location:
+ *           type: string
+ *           description: ID локації
+ *           example: "68d5213e0e6bcc357e9833b1"
  *         createdAt:
  *           type: string
  *           format: date-time
  *           example: "2024-03-15T12:00:00Z"
- *     
+ *
  *     FeedbackListResponse:
  *       type: object
  *       properties:
@@ -223,18 +233,24 @@
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/Feedback'
- *         locationId:
- *           type: string
- *           example: "68d5213e0e6bcc357e9833b1"
- *         averageRate:
- *           type: number
- *           example: 4.3
- *         totalCount:
- *           type: integer
- *           example: 12
- *     
+ *         pagination:
+ *           type: object
+ *           properties:
+ *             total:
+ *               type: integer
+ *               example: 12
+ *             page:
+ *               type: integer
+ *               example: 1
+ *             limit:
+ *               type: integer
+ *               example: 10
+ *             totalPages:
+ *               type: integer
+ *               example: 2
+ *
  *     # ========== CATEGORY SCHEMAS ==========
- *     
+ *
  *     Region:
  *       type: object
  *       properties:
@@ -254,7 +270,7 @@
  *           type: string
  *           nullable: true
  *           example: "Історико-географічна область на південному заході правобережної України."
- *     
+ *
  *     LocationType:
  *       type: object
  *       properties:
@@ -271,7 +287,7 @@
  *           type: string
  *           nullable: true
  *           example: "Спокійний відпочинок, риболовля та водні розваги."
- *     
+ *
  *     CategoriesResponse:
  *       type: object
  *       properties:
@@ -281,9 +297,9 @@
  *             oneOf:
  *               - $ref: '#/components/schemas/Region'
  *               - $ref: '#/components/schemas/LocationType'
- *     
+ *
  *     # ========== ERROR SCHEMAS ==========
- *     
+ *
  *     ValidationError:
  *       type: object
  *       properties:
@@ -301,7 +317,7 @@
  *               message:
  *                 type: string
  *                 example: "Invalid email format"
- *     
+ *
  *     Error:
  *       type: object
  *       properties:
@@ -311,7 +327,7 @@
  *         code:
  *           type: string
  *           example: "AUTH_ERROR"
- *     
+ *
  *     ConflictError:
  *       type: object
  *       properties:

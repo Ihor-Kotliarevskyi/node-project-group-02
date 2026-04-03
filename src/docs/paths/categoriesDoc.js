@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Categories
- *   description: Categories — regions and location types
+ *   description: Категорії - регіони та типи локацій
  */
 
 /**
