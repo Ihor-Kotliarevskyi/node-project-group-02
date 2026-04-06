@@ -10,6 +10,7 @@
  * /feedbacks/{locationId}:
  *   post:
  *     summary: Залишити відгук до локації
+ *     description: Додає відгук та автоматично оновлює поля `rate` і `feedbacksId` відповідної локації.
  *     tags: [Feedbacks]
  *     security:
  *       - cookieAuth: []

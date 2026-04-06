@@ -16,6 +16,8 @@ export const getAllLocations = async ({
   region,
   locationType,
   search,
+  sortBy = 'createdAt',
+  order = 'desc',
 } = {}) => {
   const pageNum = Math.max(1, parseInt(page, 10) || 1);
   const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
@@ -31,7 +33,7 @@ export const getAllLocations = async ({
     ];
   }
 
-  const sort = { createdAt: -1 };
+  const sort = { [sortBy]: order === 'asc' ? 1 : -1 };
 
   const [data, total] = await Promise.all([
     Location.find(query)

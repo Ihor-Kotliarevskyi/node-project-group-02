@@ -44,5 +44,7 @@ export const paginationSchema = {
     region: Joi.string().max(64).trim().allow(''),
     locationType: Joi.string().max(64).trim().allow(''),
     search: Joi.string().max(100).trim().allow(''),
+    sortBy: Joi.string().valid('createdAt', 'rate', 'name').default('createdAt'),
+    order: Joi.string().valid('asc', 'desc').default('desc'),
   }).unknown(false),
 };
