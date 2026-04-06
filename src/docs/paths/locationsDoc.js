@@ -41,6 +41,20 @@
  *         schema:
  *           type: string
  *         description: Search by name or description
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *           enum: [createdAt, rate, name]
+ *           default: createdAt
+ *         description: Field to sort by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: desc
+ *         description: Sort direction
  *     responses:
  *       200:
  *         description: Successfully retrieved paginated list of locations
@@ -57,6 +71,7 @@
  * /locations:
  *   post:
  *     summary: Створити нову локацію (тільки авторизовані)
+ *     description: Створює локацію та автоматично інкрементує `articlesAmount` поточного користувача.
  *     tags: [Locations]
  *     security:
  *       - cookieAuth: []
@@ -208,6 +223,7 @@
  * /locations/{id}:
  *   delete:
  *     summary: Видалення локації (тільки автор)
+ *     description: Видаляє локацію та автоматично декрементує `articlesAmount` її автора.
  *     tags: [Locations]
  *     security:
  *       - cookieAuth: []
