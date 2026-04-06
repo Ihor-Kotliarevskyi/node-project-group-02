@@ -42,7 +42,12 @@ export const paginationSchema = {
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).max(50).default(10),
     region: Joi.string().max(64).trim().allow(''),
-    locationType: Joi.string().max(64).trim().allow(''),
+    locationType: Joi.alternatives()
+      .try(
+        Joi.array().items(Joi.string().max(64).trim()).min(1),
+        Joi.string().max(64).trim().allow(''),
+      )
+      .optional(),
     search: Joi.string().max(100).trim().allow(''),
     sortBy: Joi.string().valid('createdAt', 'rate', 'name').default('createdAt'),
     order: Joi.string().valid('asc', 'desc').default('desc'),

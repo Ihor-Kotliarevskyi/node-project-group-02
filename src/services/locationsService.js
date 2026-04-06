@@ -25,7 +25,10 @@ export const getAllLocations = async ({
 
   const query = { isPublished: { $ne: false } };
   if (region) query.region = region;
-  if (locationType) query.locationType = locationType;
+  if (locationType) {
+    const types = Array.isArray(locationType) ? locationType : [locationType];
+    query.locationType = types.length === 1 ? types[0] : { $in: types };
+  }
   if (search) {
     query.$or = [
       { name: { $regex: search, $options: 'i' } },
