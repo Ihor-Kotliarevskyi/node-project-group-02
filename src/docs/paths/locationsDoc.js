@@ -34,8 +34,14 @@
  *       - in: query
  *         name: locationType
  *         schema:
- *           type: string
- *         description: Filter by location type slug (e.g., more)
+ *           oneOf:
+ *             - type: string
+ *             - type: array
+ *               items:
+ *                 type: string
+ *         style: form
+ *         explode: true
+ *         description: "Filter by location type slug(s). Single value: `?locationType=more`. Multiple: `?locationType=more&locationType=ozero`"
  *       - in: query
  *         name: search
  *         schema:
