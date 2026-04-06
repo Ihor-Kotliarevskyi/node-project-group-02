@@ -1,9 +1,14 @@
 import createHttpError from 'http-errors';
 import { Location } from '../models/location.js';
+import { User } from '../models/user.js';
 
 const POPULATE = [{ path: 'ownerId', select: 'name avatarUrl' }];
 
-export const createLocation = (data) => Location.create(data);
+export const createLocation = async (data) => {
+  const location = await Location.create(data);
+  await User.findByIdAndUpdate(data.ownerId, { $inc: { articlesAmount: 1 } });
+  return location;
+};
 
 export const getAllLocations = async ({
   page = 1,
@@ -85,5 +90,9 @@ export const deleteLocation = async (locationId, userId) => {
     throw createHttpError(403, 'Access denied. You are not the author.');
   }
 
-  return Location.findByIdAndDelete(locationId);
+  const deleted = await Location.findByIdAndDelete(locationId);
+  if (deleted) {
+    await User.findByIdAndUpdate(userId, { $inc: { articlesAmount: -1 } });
+  }
+  return deleted;
 };
