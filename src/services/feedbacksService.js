@@ -37,5 +37,16 @@ export const getFeedbacksByLocation = async (
 
 export const createFeedback = async (data) => {
   const feedback = await Feedback.create(data);
+
+  const [avgResult] = await Feedback.aggregate([
+    { $match: { location: feedback.location } },
+    { $group: { _id: '$location', avgRate: { $avg: '$rate' } } },
+  ]);
+
+  await Location.findByIdAndUpdate(feedback.location, {
+    $push: { feedbacksId: feedback._id },
+    $set: { rate: avgResult ? Math.round(avgResult.avgRate * 10) / 10 : feedback.rate },
+  });
+
   return feedback.populate(POPULATE);
 };
