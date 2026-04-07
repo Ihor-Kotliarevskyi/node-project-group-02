@@ -7,6 +7,7 @@ export const createLocationSchema = {
     region: Joi.string().max(64).trim().required(),
     description: Joi.string().min(20).max(6000).trim().required(),
     image: Joi.string().uri().required(),
+    imagePublicId: Joi.string().max(255).trim().optional(),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90).required(),
       lon: Joi.number().min(-180).max(180).required(),
@@ -21,6 +22,7 @@ export const updateLocationSchema = {
     region: Joi.string().max(64).trim(),
     description: Joi.string().min(20).max(6000).trim(),
     image: Joi.string().uri(),
+    imagePublicId: Joi.string().max(255).trim().allow(null),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90),
       lon: Joi.number().min(-180).max(180),
@@ -49,6 +51,7 @@ export const paginationSchema = {
       )
       .optional(),
     search: Joi.string().max(100).trim().allow(''),
+    owner: Joi.string().hex().length(24),
     sortBy: Joi.string().valid('createdAt', 'rate', 'name').default('createdAt'),
     order: Joi.string().valid('asc', 'desc').default('desc'),
   }).unknown(false),
