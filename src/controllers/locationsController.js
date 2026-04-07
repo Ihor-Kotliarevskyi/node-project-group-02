@@ -33,6 +33,7 @@ export const updateLocationHandler = async (req, res) => {
     'region',
     'description',
     'image',
+    'imagePublicId',
     'coordinates',
     'isPublished',
   ];

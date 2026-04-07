@@ -1,6 +1,8 @@
 import createHttpError from 'http-errors';
 import { Location } from '../models/location.js';
 import { User } from '../models/user.js';
+import { Feedback } from '../models/feedback.js';
+import { destroyImage } from '../utils/cloudinary.js';
 
 const POPULATE = [{ path: 'ownerId', select: 'name avatarUrl' }];
 
@@ -16,6 +18,7 @@ export const getAllLocations = async ({
   region,
   locationType,
   search,
+  owner,
   sortBy = 'createdAt',
   order = 'desc',
 } = {}) => {
@@ -25,6 +28,7 @@ export const getAllLocations = async ({
 
   const query = { isPublished: { $ne: false } };
   if (region) query.region = region;
+  if (owner) query.ownerId = owner;
   if (locationType) {
     const types = Array.isArray(locationType) ? locationType : [locationType];
     query.locationType = types.length === 1 ? types[0] : { $in: types };
@@ -75,14 +79,26 @@ export const updateLocation = async (id, ownerId, updates) => {
     'region',
     'description',
     'image',
+    'imagePublicId',
     'coordinates',
     'isPublished',
   ];
+
+  const previousImagePublicId = location.imagePublicId;
+  const nextImagePublicId = updates.imagePublicId;
+  const imagePublicIdChanged =
+    nextImagePublicId !== undefined && nextImagePublicId !== previousImagePublicId;
+
   allowed.forEach((field) => {
     if (updates[field] !== undefined) location[field] = updates[field];
   });
 
   await location.save();
+
+  if (imagePublicIdChanged && previousImagePublicId) {
+    await destroyImage(previousImagePublicId);
+  }
+
   await location.populate(POPULATE);
   return location;
 };
@@ -95,8 +111,13 @@ export const deleteLocation = async (locationId, userId) => {
     throw createHttpError(403, 'Access denied. You are not the author.');
   }
 
+  await Feedback.deleteMany({ location: locationId });
+
   const deleted = await Location.findByIdAndDelete(locationId);
   if (deleted) {
+    if (location.imagePublicId) {
+      await destroyImage(location.imagePublicId);
+    }
     await User.findByIdAndUpdate(userId, { $inc: { articlesAmount: -1 } });
   }
   return deleted;
