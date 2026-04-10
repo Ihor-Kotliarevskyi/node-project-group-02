@@ -1,9 +1,15 @@
 import createHttpError from 'http-errors';
 import {
+  getAllUsers,
   getUserById,
   updateUser,
   getUserLocations,
 } from '../services/usersService.js';
+
+export const getAllUsersHandler = async (req, res) => {
+  const result = await getAllUsers(req.query);
+  res.status(200).json(result);
+};
 
 export const getMe = async (req, res) => {
   res.status(200).json(req.user);

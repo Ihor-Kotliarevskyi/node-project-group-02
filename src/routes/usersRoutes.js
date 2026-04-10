@@ -1,16 +1,22 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
+  getAllUsersHandler,
   getMe,
   updateMe,
   getPublicUser,
   getPublicUserLocations,
 } from '../controllers/usersController.js';
 import { authenticate } from '../middleware/authenticate.js';
-import { updateProfileSchema } from '../validations/usersValidation.js';
+import {
+  getUsersQuerySchema,
+  updateProfileSchema,
+} from '../validations/usersValidation.js';
 import { paginationSchema } from '../validations/locationsValidation.js';
 
 const router = Router();
+
+router.get('/users', celebrate(getUsersQuerySchema), getAllUsersHandler);
 
 router.get('/users/me', authenticate, getMe);
 
