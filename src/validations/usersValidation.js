@@ -1,5 +1,14 @@
 import { Joi, Segments } from 'celebrate';
 
+export const getUsersQuerySchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).max(50).default(10),
+    sortBy: Joi.string().valid('name', 'articlesAmount').default('name'),
+    order: Joi.string().valid('asc', 'desc').default('asc'),
+  }).unknown(false),
+};
+
 export const updateProfileSchema = {
   [Segments.BODY]: Joi.object({
     name: Joi.string().min(2).max(32).trim().messages({

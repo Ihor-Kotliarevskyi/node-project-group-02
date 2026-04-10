@@ -12,6 +12,33 @@ export const updateUser = (id, updates) =>
     { new: true, runValidators: true },
   );
 
+export const getAllUsers = async ({
+  page = 1,
+  limit = 10,
+  sortBy = 'name',
+  order = 'asc',
+} = {}) => {
+  const pageNum = Math.max(1, parseInt(page));
+  const limitNum = Math.min(50, Math.max(1, parseInt(limit)));
+  const skip = (pageNum - 1) * limitNum;
+  const sortOrder = order === 'asc' ? 1 : -1;
+
+  const [data, total] = await Promise.all([
+    User.find().skip(skip).limit(limitNum).sort({ [sortBy]: sortOrder }),
+    User.countDocuments(),
+  ]);
+
+  return {
+    data,
+    pagination: {
+      total,
+      page: pageNum,
+      limit: limitNum,
+      totalPages: Math.ceil(total / limitNum),
+    },
+  };
+};
+
 export const getUserLocations = async (
   userId,
   { page = 1, limit = 10 } = {},
