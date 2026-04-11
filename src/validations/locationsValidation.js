@@ -39,6 +39,13 @@ export const idParamSchema = {
   }),
 };
 
+export const photoParamSchema = {
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().hex().length(24).required(),
+    photoId: Joi.string().hex().length(24).required(),
+  }),
+};
+
 export const paginationSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),

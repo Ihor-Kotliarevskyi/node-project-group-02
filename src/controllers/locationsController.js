@@ -1,7 +1,9 @@
 import createHttpError from 'http-errors';
 import {
+  addPhotos,
   createLocation,
   deleteLocation,
+  deletePhoto,
   getAllLocations,
   getLocationById,
   updateLocation,
@@ -49,6 +51,23 @@ export const updateLocationHandler = async (req, res) => {
   if (!result) throw createHttpError(404, 'Location not found');
 
   res.status(200).json(result);
+};
+
+export const addPhotosHandler = async (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    throw createHttpError(400, 'At least one image file is required');
+  }
+  const location = await addPhotos(req.params.id, req.user._id, req.files);
+  res.status(200).json(location);
+};
+
+export const deletePhotoHandler = async (req, res) => {
+  const location = await deletePhoto(
+    req.params.id,
+    req.user._id,
+    req.params.photoId,
+  );
+  res.status(200).json(location);
 };
 
 export const deleteLocationHandler = async (req, res) => {

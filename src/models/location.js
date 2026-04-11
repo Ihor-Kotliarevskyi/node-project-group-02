@@ -23,6 +23,12 @@ const locationSchema = new Schema(
       type: String,
       default: null,
     },
+    photos: [
+      {
+        url: { type: String, required: true },
+        publicId: { type: String, required: true },
+      },
+    ],
     region: {
       type: String,
       required: [true, 'Region slug is required'],

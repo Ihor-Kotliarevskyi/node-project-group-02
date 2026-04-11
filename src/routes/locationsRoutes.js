@@ -1,18 +1,22 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
+  addPhotosHandler,
   createLocationHandler,
   deleteLocationHandler,
+  deletePhotoHandler,
   getAllLocationsHandler,
   getLocationByIdHandler,
   updateLocationHandler,
 } from '../controllers/locationsController.js';
 import { authenticate } from '../middleware/authenticate.js';
+import { uploadImages, handleMulterError } from '../middleware/multer.js';
 
 import {
   createLocationSchema,
   idParamSchema,
   paginationSchema,
+  photoParamSchema,
   updateLocationSchema,
 } from '../validations/locationsValidation.js';
 
@@ -41,6 +45,22 @@ router.delete(
   authenticate,
   celebrate(idParamSchema),
   deleteLocationHandler,
+);
+
+router.post(
+  '/locations/:id/photos',
+  authenticate,
+  uploadImages,
+  handleMulterError,
+  celebrate(idParamSchema),
+  addPhotosHandler,
+);
+
+router.delete(
+  '/locations/:id/photos/:photoId',
+  authenticate,
+  celebrate(photoParamSchema),
+  deletePhotoHandler,
 );
 
 export default router;

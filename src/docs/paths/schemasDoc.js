@@ -136,6 +136,23 @@
  *           type: string
  *           format: uri
  *           example: "https://example.com/synevyr.jpg"
+ *         photos:
+ *           type: array
+ *           maxItems: 10
+ *           description: Додаткові фотографії локації (максимум 10)
+ *           items:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *                 example: "68d5213e0e6bcc357e9833c0"
+ *               url:
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+ *               publicId:
+ *                 type: string
+ *                 example: "locations/photos/sample"
  *         coordinates:
  *           $ref: '#/components/schemas/Coordinates'
  *         ownerId:

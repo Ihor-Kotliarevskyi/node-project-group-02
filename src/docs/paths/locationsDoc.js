@@ -253,3 +253,99 @@
  *       404:
  *         description: Location not found
  */
+
+/**
+ * @swagger
+ * /locations/{id}/photos:
+ *   post:
+ *     summary: Завантаження додаткових фотографій до локації (тільки автор)
+ *     description: >
+ *       Приймає від 1 до 10 файлів через `multipart/form-data`.
+ *       Максимум **10 додаткових фото** на локацію (враховуються вже завантажені).
+ *       Кожен файл не більше **4 MB**, формати — JPG або PNG.
+ *       Повертає оновлений об'єкт локації.
+ *     tags: [Locations]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId локації
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - images
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *                 minItems: 1
+ *                 maxItems: 10
+ *                 description: Масив файлів зображень (JPG або PNG, до 4 MB кожен)
+ *     responses:
+ *       200:
+ *         description: Фото успішно додано, повертається оновлена локація
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       400:
+ *         description: Файли не передані, невірний формат або перевищено ліміт
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (не автор локації)
+ *       404:
+ *         description: Location not found
+ */
+
+/**
+ * @swagger
+ * /locations/{id}/photos/{photoId}:
+ *   delete:
+ *     summary: Видалення одного фото з локації (тільки автор)
+ *     description: Видаляє фото з масиву `photos` та з Cloudinary за `photoId`.
+ *     tags: [Locations]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId локації
+ *       - in: path
+ *         name: photoId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId фото (поле `_id` об'єкта в масиві `photos`)
+ *     responses:
+ *       200:
+ *         description: Фото видалено, повертається оновлена локація
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       400:
+ *         description: Invalid id format
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (не автор локації)
+ *       404:
+ *         description: Location or photo not found
+ */

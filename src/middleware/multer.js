@@ -1,7 +1,7 @@
 import multer from 'multer';
 import createHttpError from 'http-errors';
 
-const ONE_MB = 1 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
 const storage = multer.memoryStorage();
 
@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage,
-  limits: { fileSize: ONE_MB },
+  limits: { fileSize: MAX_FILE_SIZE },
   fileFilter,
 });
 
