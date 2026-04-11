@@ -7,6 +7,16 @@ cloudinary.config({
   secure: true,
 });
 
+export const uploadImage = (buffer, folder = 'locations') =>
+  new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ folder, resource_type: 'image' }, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      })
+      .end(buffer);
+  });
+
 export const destroyImage = async (publicId) => {
   if (!publicId) return null;
   try {

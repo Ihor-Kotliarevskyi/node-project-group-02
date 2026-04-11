@@ -156,6 +156,8 @@ src/
 | `POST` | `/locations` | Створити нову локацію | ✅ |
 | `GET` | `/locations/:id` | Деталі локації | — |
 | `PATCH` | `/locations/:id` | Оновити локацію | ✅ |
+| `POST` | `/locations/:id/photos` | Додати фотографії до локації (max 10, multipart/form-data) | ✅ |
+| `DELETE` | `/locations/:id/photos/:photoId` | Видалити фото з локації | ✅ |
 
 ### 💬 Feedbacks — `/feedbacks`
 

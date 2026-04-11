@@ -2,7 +2,9 @@ import createHttpError from 'http-errors';
 import { Location } from '../models/location.js';
 import { User } from '../models/user.js';
 import { Feedback } from '../models/feedback.js';
-import { destroyImage } from '../utils/cloudinary.js';
+import { destroyImage, uploadImage } from '../utils/cloudinary.js';
+
+const MAX_PHOTOS = 10;
 
 const POPULATE = [{ path: 'ownerId', select: 'name avatarUrl' }];
 
@@ -118,7 +120,55 @@ export const deleteLocation = async (locationId, userId) => {
     if (location.imagePublicId) {
       await destroyImage(location.imagePublicId);
     }
+    await Promise.all(location.photos.map((p) => destroyImage(p.publicId)));
     await User.findByIdAndUpdate(userId, { $inc: { articlesAmount: -1 } });
   }
   return deleted;
+};
+
+export const addPhotos = async (locationId, ownerId, files) => {
+  const location = await Location.findById(locationId);
+  if (!location) throw createHttpError(404, 'Location not found');
+  if (location.ownerId.toString() !== ownerId.toString()) {
+    throw createHttpError(403, 'Access denied. You are not the author.');
+  }
+
+  const available = MAX_PHOTOS - location.photos.length;
+  if (available <= 0) {
+    throw createHttpError(
+      400,
+      `Maximum ${MAX_PHOTOS} additional photos allowed per location`,
+    );
+  }
+
+  const filesToUpload = files.slice(0, available);
+  const uploaded = await Promise.all(
+    filesToUpload.map((file) => uploadImage(file.buffer, 'locations/photos')),
+  );
+
+  location.photos.push(
+    ...uploaded.map((r) => ({ url: r.secure_url, publicId: r.public_id })),
+  );
+  await location.save();
+  await location.populate(POPULATE);
+  return location;
+};
+
+export const deletePhoto = async (locationId, ownerId, photoId) => {
+  const location = await Location.findById(locationId);
+  if (!location) throw createHttpError(404, 'Location not found');
+  if (location.ownerId.toString() !== ownerId.toString()) {
+    throw createHttpError(403, 'Access denied. You are not the author.');
+  }
+
+  const photo = location.photos.id(photoId);
+  if (!photo) throw createHttpError(404, 'Photo not found');
+
+  const { publicId } = photo;
+  photo.deleteOne();
+  await location.save();
+  await destroyImage(publicId);
+
+  await location.populate(POPULATE);
+  return location;
 };
