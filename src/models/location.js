@@ -23,6 +23,10 @@ const locationSchema = new Schema(
       type: String,
       default: null,
     },
+    imagePosition: {
+      type: String,
+      default: '50% 50%',
+    },
     photos: [
       {
         url: { type: String, required: true },

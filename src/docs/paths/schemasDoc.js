@@ -136,6 +136,11 @@
  *           type: string
  *           format: uri
  *           example: "https://example.com/synevyr.jpg"
+ *         imagePosition:
+ *           type: string
+ *           description: CSS background-position для головного фото (наприклад "50% 50%", "30% 70%")
+ *           default: "50% 50%"
+ *           example: "30% 70%"
  *         photos:
  *           type: array
  *           maxItems: 10

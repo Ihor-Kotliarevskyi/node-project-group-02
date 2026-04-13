@@ -7,6 +7,7 @@ import {
   deletePhotoHandler,
   getAllLocationsHandler,
   getLocationByIdHandler,
+  setMainPhotoHandler,
   updateLocationHandler,
 } from '../controllers/locationsController.js';
 import { authenticate } from '../middleware/authenticate.js';
@@ -15,6 +16,7 @@ import { uploadImages, handleMulterError } from '../middleware/multer.js';
 import {
   createLocationSchema,
   idParamSchema,
+  mainPhotoSchema,
   paginationSchema,
   photoParamSchema,
   updateLocationSchema,
@@ -45,6 +47,13 @@ router.delete(
   authenticate,
   celebrate(idParamSchema),
   deleteLocationHandler,
+);
+
+router.put(
+  '/locations/:id/main-photo',
+  authenticate,
+  celebrate({ ...idParamSchema, ...mainPhotoSchema }),
+  setMainPhotoHandler,
 );
 
 router.post(
