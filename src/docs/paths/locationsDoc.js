@@ -198,6 +198,15 @@
  *               image:
  *                 type: string
  *                 format: uri
+ *               imagePublicId:
+ *                 type: string
+ *                 maxLength: 255
+ *                 nullable: true
+ *               imagePosition:
+ *                 type: string
+ *                 maxLength: 32
+ *                 description: CSS background-position для головного фото
+ *                 example: "30% 70%"
  *               isPublished:
  *                 type: boolean
  *               coordinates:
@@ -250,6 +259,63 @@
  *         description: Unauthorized
  *       403:
  *         description: Forbidden (not the author)
+ *       404:
+ *         description: Location not found
+ */
+
+/**
+ * @swagger
+ * /locations/{id}/main-photo:
+ *   put:
+ *     summary: Змінити головне фото локації (тільки автор)
+ *     description: Оновлює лише поля `image`, `imagePublicId` та `imagePosition`. Не торкається інших полів локації.
+ *     tags: [Locations]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-f\d]{24}$'
+ *         description: MongoDB ObjectId локації
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [image, imagePublicId]
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: uri
+ *                 description: URL нового головного фото (Cloudinary)
+ *                 example: "https://res.cloudinary.com/demo/image/upload/v1/locations/photo.jpg"
+ *               imagePublicId:
+ *                 type: string
+ *                 maxLength: 255
+ *                 description: Cloudinary public_id нового фото
+ *                 example: "locations/photo"
+ *               imagePosition:
+ *                 type: string
+ *                 maxLength: 32
+ *                 description: CSS background-position для фокусної точки
+ *                 example: "30% 70%"
+ *     responses:
+ *       200:
+ *         description: Головне фото оновлено, повертається оновлена локація
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       400:
+ *         description: Validation error або невірний формат id
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (не автор локації)
  *       404:
  *         description: Location not found
  */

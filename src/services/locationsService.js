@@ -82,6 +82,7 @@ export const updateLocation = async (id, ownerId, updates) => {
     'description',
     'image',
     'imagePublicId',
+    'imagePosition',
     'coordinates',
     'isPublished',
   ];
@@ -124,6 +125,22 @@ export const deleteLocation = async (locationId, userId) => {
     await User.findByIdAndUpdate(userId, { $inc: { articlesAmount: -1 } });
   }
   return deleted;
+};
+
+export const setMainPhoto = async (locationId, ownerId, { image, imagePublicId, imagePosition }) => {
+  const location = await Location.findById(locationId);
+  if (!location) throw createHttpError(404, 'Location not found');
+  if (location.ownerId.toString() !== ownerId.toString()) {
+    throw createHttpError(403, 'Access denied. You are not the author.');
+  }
+
+  location.image = image;
+  location.imagePublicId = imagePublicId;
+  if (imagePosition !== undefined) location.imagePosition = imagePosition;
+
+  await location.save();
+  await location.populate(POPULATE);
+  return location;
 };
 
 export const addPhotos = async (locationId, ownerId, files) => {

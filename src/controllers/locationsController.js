@@ -6,6 +6,7 @@ import {
   deletePhoto,
   getAllLocations,
   getLocationById,
+  setMainPhoto,
   updateLocation,
 } from '../services/locationsService.js';
 
@@ -36,6 +37,7 @@ export const updateLocationHandler = async (req, res) => {
     'description',
     'image',
     'imagePublicId',
+    'imagePosition',
     'coordinates',
     'isPublished',
   ];
@@ -51,6 +53,15 @@ export const updateLocationHandler = async (req, res) => {
   if (!result) throw createHttpError(404, 'Location not found');
 
   res.status(200).json(result);
+};
+
+export const setMainPhotoHandler = async (req, res) => {
+  const location = await setMainPhoto(
+    req.params.id,
+    req.user._id,
+    req.body,
+  );
+  res.status(200).json(location);
 };
 
 export const addPhotosHandler = async (req, res) => {

@@ -8,6 +8,7 @@ export const createLocationSchema = {
     description: Joi.string().min(20).max(6000).trim().required(),
     image: Joi.string().uri().required(),
     imagePublicId: Joi.string().max(255).trim().optional(),
+    imagePosition: Joi.string().max(32).trim().optional(),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90).required(),
       lon: Joi.number().min(-180).max(180).required(),
@@ -23,6 +24,7 @@ export const updateLocationSchema = {
     description: Joi.string().min(20).max(6000).trim(),
     image: Joi.string().uri(),
     imagePublicId: Joi.string().max(255).trim().allow(null),
+    imagePosition: Joi.string().max(32).trim(),
     coordinates: Joi.object({
       lat: Joi.number().min(-90).max(90),
       lon: Joi.number().min(-180).max(180),
@@ -31,6 +33,14 @@ export const updateLocationSchema = {
   })
     .min(1)
     .unknown(false),
+};
+
+export const mainPhotoSchema = {
+  [Segments.BODY]: Joi.object({
+    image: Joi.string().uri().required(),
+    imagePublicId: Joi.string().max(255).trim().required(),
+    imagePosition: Joi.string().max(32).trim().optional(),
+  }),
 };
 
 export const idParamSchema = {
